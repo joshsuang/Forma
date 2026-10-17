@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f4f4f2;
+  --foreground: #2c2c2a;
+  --muted: #6f6f6a;
+  --mark-fill: #3d6b52;
+  --mark-text: #f7f7f4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #1c1c1a;
+    --foreground: #ecece8;
+    --muted: #a3a39c;
+    --mark-fill: #6d9a7d;
+    --mark-text: #1c1c1a;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
