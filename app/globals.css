@@ -1,27 +1,197 @@
 @import "tailwindcss";
 
+/* Dark variant follows the applied theme attribute (set before paint). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/*
+ * Forma design tokens.
+ *
+ * Spacing: Tailwind's default 4 px scale (space-1 = 0.25rem). Card padding is
+ * 20px (px-5), section gaps are 24–32px. Keep layouts on this scale.
+ *
+ * Color: restrained neutrals. Green (--success) is reserved for successful
+ * completion and positive progress; it is not a general accent.
+ */
+
 :root {
+  color-scheme: light;
+
+  /* Surfaces */
   --background: #f4f4f2;
+  --surface: #fdfdfc;
+  --surface-subtle: #ebebe7;
+
+  /* Text */
   --foreground: #2c2c2a;
-  --muted: #6f6f6a;
+  --muted-foreground: #6f6f6a;
+
+  /* Lines and focus */
+  --border: #e2e2dc;
+  --ring: #7a7a72;
+
+  /* Controls */
+  --primary: #2c2c2a;
+  --primary-foreground: #fafaf8;
+  --secondary: #ecece8;
+  --secondary-foreground: #2c2c2a;
+  --destructive: #a63d2f;
+  --destructive-foreground: #fafaf8;
+
+  /* Status */
+  --success: #3d6b52;
+  --success-subtle: #e4ece6;
+  --success-foreground: #f7f7f4;
+
+  /* Module 1.1 entry-page mark (legacy names, kept for app/page.tsx). */
   --mark-fill: #3d6b52;
   --mark-text: #f7f7f4;
+  --muted: #6f6f6a;
+}
+
+/* Dark palette. Resolved in two places: explicit theme, and system preference
+   when no explicit theme is set (JavaScript disabled). */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --background: #1c1c1a;
+  --surface: #242422;
+  --surface-subtle: #2c2c29;
+
+  --foreground: #ecece8;
+  --muted-foreground: #a3a39c;
+
+  --border: #34342f;
+  --ring: #94948b;
+
+  --primary: #ecece8;
+  --primary-foreground: #1c1c1a;
+  --secondary: #2c2c29;
+  --secondary-foreground: #ecece8;
+  --destructive: #cf7361;
+  --destructive-foreground: #1c1c1a;
+
+  --success: #6d9a7d;
+  --success-subtle: #26332b;
+  --success-foreground: #1c1c1a;
+
+  --mark-fill: #6d9a7d;
+  --mark-text: #1c1c1a;
+  --muted: #a3a39c;
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+
     --background: #1c1c1a;
+    --surface: #242422;
+    --surface-subtle: #2c2c29;
+
     --foreground: #ecece8;
-    --muted: #a3a39c;
+    --muted-foreground: #a3a39c;
+
+    --border: #34342f;
+    --ring: #94948b;
+
+    --primary: #ecece8;
+    --primary-foreground: #1c1c1a;
+    --secondary: #2c2c29;
+    --secondary-foreground: #ecece8;
+    --destructive: #cf7361;
+    --destructive-foreground: #1c1c1a;
+
+    --success: #6d9a7d;
+    --success-subtle: #26332b;
+    --success-foreground: #1c1c1a;
+
     --mark-fill: #6d9a7d;
     --mark-text: #1c1c1a;
+    --muted: #a3a39c;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family:
+/* Semantic color utilities: bg-background, text-foreground, border-border … */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-foreground: var(--success-foreground);
+}
+
+@theme {
+  /* Typography hierarchy */
+  --font-sans:
     -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji";
+
+  --text-page-title: 1.75rem;
+  --text-page-title--line-height: 2.25rem;
+  --text-page-title--font-weight: 500;
+  --text-page-title--letter-spacing: -0.02em;
+
+  --text-section-title: 1.125rem;
+  --text-section-title--line-height: 1.75rem;
+  --text-section-title--font-weight: 500;
+  --text-section-title--letter-spacing: -0.01em;
+
+  --text-card-title: 0.9375rem;
+  --text-card-title--line-height: 1.5rem;
+  --text-card-title--font-weight: 500;
+
+  --text-stat: 2rem;
+  --text-stat--line-height: 2.5rem;
+  --text-stat--font-weight: 500;
+  --text-stat--letter-spacing: -0.02em;
+
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.25rem;
+  --text-label--font-weight: 500;
+
+  --text-body: 0.875rem;
+  --text-body--line-height: 1.5rem;
+
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+
+  /* Corner radii */
+  --radius-control: 0.5rem;
+  --radius-card: 0.75rem;
+
+  /* Shadows */
+  --shadow-card: 0 1px 2px rgb(28 28 26 / 0.05);
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--border);
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
 }
