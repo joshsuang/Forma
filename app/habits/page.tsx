@@ -1,5 +1,5 @@
 "use client";
-import { DEFAULT_CATEGORIES, DEFAULT_HABIT_CONFIGS, type Habit, type HabitType, type HabitSchedule, type HabitScheduleConfig } from "@/lib/types";
+import { DEFAULT_CATEGORIES, DEFAULT_HABIT_CONFIGS, type Habit, type HabitType, type HabitCategory, type HabitSchedule, type HabitScheduleConfig } from "@/lib/types";
 import { cn } from "@/lib/cn";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,12 +17,12 @@ export default function HabitsPage() {
   const [form, setForm] = useState<any>({
     name: "",
     description: "",
-    category: "Health",
+    category: "Health" as const,
     type: "boolean" as HabitType,
     target: 1,
     unit: "sessions",
     schedule: "every-day",
-    selectedWeekdays: [],
+    selectedWeekdays: [] as const,
     weeklyTarget: 1,
     monthlyTarget: 1,
   });
@@ -198,13 +198,22 @@ export default function HabitsPage() {
                 <option value="School">School</option>
                 <option value="Productivity">Productivity</option>
                 <option value="Personal">Personal</option>
-                {DEFAULT_CATEGORIES.map((cat) => {
-                  if (cat !== "Health" && cat !== "Fitness" && cat !== "School" && cat !== "Productivity" && cat !== "Personal") {
-                    return <option key={cat} value={cat}>{cat}</option>;
-                  }
-                  return null;
-                })}
+                <option value="custom">Custom...</option>
               </select>
+                <input
+                  type="text"
+                  id="custom-category"
+                  value={form.categoryCustom || ""}
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      categoryCustom: e.target.value,
+                      category: form.categoryCustom ? "custom" : "Health" as const,
+                    })
+                  }
+                  className={cn("rounded-control border border-border bg-surface text-body w-full focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-range", "hidden:!form.categoryCustom")}
+                  placeholder="Enter custom category"
+                />
             </div>
 
             <div>
